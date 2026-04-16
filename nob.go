@@ -10,8 +10,8 @@ import (
 	"runtime"
 	"errors"
 	"path/filepath"
-	fstring "github.com/fipaan/lib.go/string"
-	fpath "github.com/fipaan/lib.go/path"
+	fstring "github.com/Fipaan/lib.go/string"
+	fpath "github.com/Fipaan/lib.go/path"
 )
 
 func ProgramPath() string {
