@@ -59,7 +59,7 @@ func CmdInit(args ...string) *Cmd {
 		Stderr:     os.Stderr,
 		Stdin:      os.Stdin,
 		ResetOnRun: true,
-		Dotenv      false,
+		Dotenv:     false,
 	}
 	cmd.Reset(args...)
 	return &cmd
