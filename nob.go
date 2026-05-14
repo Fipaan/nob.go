@@ -2,16 +2,17 @@ package nob
 // NOTE: inspired by Tsoding: https://github.com/tsoding/nob.h
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
 	"path"
-	"time"
-	"runtime"
-	"errors"
 	"path/filepath"
-	fstring "github.com/Fipaan/lib.go/string"
+	"runtime"
+	"strings"
+	"time"
 	fpath "github.com/Fipaan/lib.go/path"
+	fstring "github.com/Fipaan/lib.go/string"
 )
 
 func ProgramPath() string {
@@ -58,6 +59,7 @@ func CmdInit(args ...string) *Cmd {
 		Stderr:     os.Stderr,
 		Stdin:      os.Stdin,
 		ResetOnRun: true,
+		Dotenv      false,
 	}
 	cmd.Reset(args...)
 	return &cmd
