@@ -215,6 +215,14 @@ func MkdirIfNotExists(path string) error {
 	return err
 }
 
+func CopyFile(src, dst string) (err error) {
+	err = os.MkdirAll(filepath.Dir(dst), 0755)
+	if err != nil { return }
+	in, err := os.ReadFile(src)
+	if err != nil { return }
+	return os.WriteFile(dst, in, 0644)
+}
+
 func NeedsRebuild(outPath string, srcPaths ...string) (needs bool, err error) {
 	var outTime time.Time
 	outTime, err = GetModTime(outPath)
