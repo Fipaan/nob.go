@@ -228,7 +228,7 @@ func NeedsRebuild(outPath string, srcPaths ...string) (needs bool, err error) {
 	outTime, err = GetModTime(outPath)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			needs = false
+			needs = true // don't exists => needs rebuild
 			err   = nil
 		}
 		return
