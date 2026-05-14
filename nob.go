@@ -37,13 +37,14 @@ func TryEnv(key, fallback string) string {
 }
 
 type Cmd struct {
-	Args       []string
-	Dir        string
-	Stdout    *os.File
-	Stderr    *os.File
-	Stdin     *os.File
-	ResetOnRun bool
-	Pipe      *Cmd
+	Args         []string
+	Dir          string
+	Stdout      *os.File
+	Stderr      *os.File
+	Stdin       *os.File
+	ResetOnRun   bool
+	Dotenv       bool
+	Pipe        *Cmd
 }
 
 func (cmd *Cmd) Reset(args ...string) {
@@ -95,6 +96,23 @@ func (cmd *Cmd) printCmd() bool {
 		fmt.Printf(" %v", CleanArg(args[i]))
 	}
 	return true
+}
+
+func LoadEnv(path string) error {
+    data, err := os.ReadFile(path)
+    if err != nil { return err }
+    for _, line := range strings.Split(string(data), "\n") {
+        line = strings.TrimSpace(line)
+        if line == "" || strings.HasPrefix(line, "#") { continue }
+        key, val, ok := strings.Cut(line, "=")
+        if !ok { continue }
+        key = strings.TrimSpace(key)
+        val = strings.TrimSpace(val)
+        if os.Getenv(key) == "" {
+            os.Setenv(key, val)
+        }
+    }
+    return nil
 }
 
 func (cmd *Cmd) Run() bool {
@@ -151,9 +169,13 @@ func (cmd *Cmd) Run() bool {
 	} else {
 		if !cmd.printCmd() { return false }
 		fmt.Printf("\n")
-		if err := _cmd.Run(); err != nil {
+		err := LoadEnv(".env")
+		if err != nil {
+			fmt.Printf("ERROR: couldn't load \".env\": %v\n", err)
 			return false
 		}
+		err = _cmd.Run()
+		if err != nil { return false }
 	}
 	if cmd.ResetOnRun { cmd.Reset() }
 	return true
