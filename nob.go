@@ -171,12 +171,14 @@ func (cmd *Cmd) Run() bool {
 	} else {
 		if !cmd.printCmd() { return false }
 		fmt.Printf("\n")
-		err := LoadEnv(".env")
-		if err != nil {
-			fmt.Printf("ERROR: couldn't load \".env\": %v\n", err)
-			return false
+		if cmd.Dotenv {
+			err := LoadEnv(".env")
+			if err != nil {
+				fmt.Printf("ERROR: couldn't load \".env\": %v\n", err)
+				return false
+			}
 		}
-		err = _cmd.Run()
+		err := _cmd.Run()
 		if err != nil { return false }
 	}
 	if cmd.ResetOnRun { cmd.Reset() }
