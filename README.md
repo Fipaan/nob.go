@@ -24,7 +24,7 @@ func main() {
 
 	cmd := nob.CmdInit()
 
-	cmd.Push("go", "run", "./cmd")
+	cmd.Push("go", "run", "main.go")
     if !cmd.Run() { os.Exit(1) }
 }
 ```
