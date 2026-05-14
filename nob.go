@@ -29,6 +29,13 @@ func SourceName(skip int) string {
 	return file
 }
 
+func TryEnv(key, fallback string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
+	}
+	return fallback
+}
+
 type Cmd struct {
 	Args       []string
 	Dir        string
